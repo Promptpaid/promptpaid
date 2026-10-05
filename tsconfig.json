@@ -1,0 +1,3 @@
+{
+  "extends": "@promptpaid/config/tsconfig.base.json"
+}

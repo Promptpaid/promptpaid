@@ -1,0 +1,44 @@
+{
+  "name": "promptpaid",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "check-types": "turbo run check-types",
+    "dev:web": "turbo run dev -F web --",
+    "dev:server": "turbo run dev -F server --",
+    "db:push": "turbo run db:push -F @promptpaid/db --",
+    "db:studio": "turbo run db:studio -F @promptpaid/db --",
+    "db:generate": "turbo run db:generate -F @promptpaid/db --",
+    "db:migrate": "turbo run db:migrate -F @promptpaid/db --",
+    "deploy:setup": "pnpm dlx vercel link",
+    "dev:vercel": "pnpm dlx vercel dev -L",
+    "env:preview": "tsx scripts/sync-vercel-env.ts preview",
+    "env:production": "tsx scripts/sync-vercel-env.ts production",
+    "deploy": "pnpm dlx vercel deploy",
+    "deploy:prod": "pnpm dlx vercel deploy --prod",
+    "deploy:check": "pnpm dlx vercel deploy --dry",
+    "env:generate": "varlock codegen --path ./apps/web/ && varlock codegen --path ./apps/server/ && varlock codegen --path ./packages/db/",
+    "postinstall": "varlock codegen --path ./apps/web/ && varlock codegen --path ./apps/server/ && varlock codegen --path ./packages/db/"
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@promptpaid/config": "workspace:*",
+    "@types/node": "catalog:",
+    "tsx": "catalog:",
+    "turbo": "^2.10.12",
+    "typescript": "catalog:",
+    "varlock": "catalog:"
+  },
+  "packageManager": "pnpm@12.3.4",
+  "varlock": {
+    "loadPath": "./apps/server/"
+  }
+}

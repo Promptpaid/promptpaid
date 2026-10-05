@@ -1,0 +1,28 @@
+// Better-T-Stack project metadata
+//
+// Keep this file to use the `add` command.
+// Add addons: pnpm dlx create-better-t-stack@latest add
+//
+// Docs: https://better-t-stack.dev/docs
+// Stack Builder: https://better-t-stack.dev/new
+
+{
+  "$schema": "https://r2.better-t-stack.dev/schema.json",
+  "version": "3.44.2",
+  "createdAt": "2026-10-05T15:10:11.023Z",
+  "reproducibleCommand": "pnpm create better-t-stack@latest promptpaid --frontend next --backend express --runtime node --database postgres --orm prisma --api none --auth none --payments none --addons turborepo --examples none --db-setup neon --web-deploy vercel --server-deploy vercel --git --package-manager pnpm --install",
+  "database": "postgres",
+  "orm": "prisma",
+  "backend": "express",
+  "runtime": "node",
+  "frontend": ["next"],
+  "addons": ["turborepo"],
+  "examples": [],
+  "auth": "none",
+  "payments": "none",
+  "packageManager": "pnpm",
+  "dbSetup": "neon",
+  "api": "none",
+  "webDeploy": "vercel",
+  "serverDeploy": "vercel",
+}
