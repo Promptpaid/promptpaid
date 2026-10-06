@@ -1,8 +1,7 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Geist, Instrument_Serif } from "next/font/google";
 
 import "../index.css";
-import Header from "@/components/header";
 import Providers from "@/components/providers";
 
 const geistSans = Geist({
@@ -10,14 +9,21 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  style: ["normal", "italic"],
+  weight: "400",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "promptpaid",
-  description: "promptpaid",
+  title: "PromptPaid — Get paid for the conversations that train AI",
+  description:
+    "PromptPaid is an AI training platform. Have real conversations with AI models, get paid for the work that makes them better, and be part of something real.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#1b6b3a",
 };
 
 export default function RootLayout({
@@ -27,13 +33,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>
-          <div className="grid grid-rows-[auto_1fr] h-svh">
-            <Header />
-            {children}
-          </div>
-        </Providers>
+      <body className={`${geistSans.variable} ${instrumentSerif.variable} antialiased`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

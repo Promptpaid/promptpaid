@@ -1,1 +1,5 @@
 @import "@promptpaid/ui/globals.css";
+
+*{
+    scroll-behavior: smooth;
+}

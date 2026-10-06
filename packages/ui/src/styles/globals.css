@@ -117,6 +117,16 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
+@theme inline {
+  --font-sans: var(--font-geist-sans, "Inter Variable"), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif, "Instrument Serif"), Georgia, serif;
+  --radius-clay: var(--clay-radius);
+  --radius-clay-sm: var(--clay-radius-sm);
+  --shadow-clay: var(--clay-shadow);
+  --shadow-clay-pressed: var(--clay-shadow-pressed);
+  --shadow-clay-field: var(--clay-field);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -126,5 +136,96 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+:root {
+  --background: oklch(0.992 0.004 150);
+  --foreground: oklch(0.2 0.03 160);
+  --card: oklch(0.998 0.002 150);
+  --card-foreground: oklch(0.2 0.03 160);
+  --popover: oklch(0.998 0.002 150);
+  --popover-foreground: oklch(0.2 0.03 160);
+  --primary: oklch(0.47 0.14 152);
+  --primary-foreground: oklch(0.99 0.003 150);
+  --secondary: oklch(0.94 0.03 152);
+  --secondary-foreground: oklch(0.25 0.05 155);
+  --muted: oklch(0.955 0.012 150);
+  --muted-foreground: oklch(0.45 0.02 160);
+  --accent: oklch(0.93 0.045 152);
+  --accent-foreground: oklch(0.25 0.06 155);
+  --border: oklch(0.88 0.015 155);
+  --input: oklch(0.88 0.015 155);
+  --ring: oklch(0.5 0.14 152);
+  --radius: 1rem;
+
+  --clay-radius: 1.25rem;
+  --clay-radius-sm: 1rem;
+  --clay-highlight: oklch(1 0 0 / 0.9);
+  --clay-shade: oklch(0.35 0.06 160 / 0.09);
+  --clay-drop: 0 8px 18px -10px oklch(0.3 0.06 160 / 0.3),
+    0 4px 8px -4px oklch(0.3 0.06 160 / 0.16);
+  --clay-shadow: inset 0 2px 0 0 var(--clay-highlight),
+    inset 0 -3px 0 0 var(--clay-shade), var(--clay-drop);
+  --clay-shadow-pressed: inset 0 3px 7px oklch(0.35 0.06 160 / 0.22),
+    inset 0 -1px 0 0 oklch(1 0 0 / 0.55);
+  --clay-field: inset 0 2px 5px oklch(0.3 0.06 160 / 0.14),
+    inset 0 -1px 0 0 oklch(1 0 0 / 0.6);
+}
+
+:root[class~="dark"],
+:root[data-theme="dark"] {
+  --background: oklch(0.16 0.02 160);
+  --foreground: oklch(0.94 0.012 152);
+  --card: oklch(0.22 0.025 160);
+  --card-foreground: oklch(0.94 0.012 152);
+  --popover: oklch(0.22 0.025 160);
+  --popover-foreground: oklch(0.94 0.012 152);
+  --primary: oklch(0.72 0.15 152);
+  --primary-foreground: oklch(0.15 0.03 160);
+  --secondary: oklch(0.29 0.04 158);
+  --secondary-foreground: oklch(0.93 0.015 150);
+  --muted: oklch(0.27 0.03 158);
+  --muted-foreground: oklch(0.72 0.02 155);
+  --accent: oklch(0.32 0.055 155);
+  --accent-foreground: oklch(0.93 0.02 152);
+  --border: oklch(1 0 0 / 0.12);
+  --input: oklch(1 0 0 / 0.16);
+  --ring: oklch(0.72 0.15 152);
+
+  --clay-highlight: oklch(1 0 0 / 0.08);
+  --clay-shade: oklch(0 0 0 / 0.45);
+  --clay-drop: 0 14px 26px -12px oklch(0 0 0 / 0.6),
+    0 6px 12px -6px oklch(0 0 0 / 0.4);
+  --clay-shadow: inset 0 1px 0 0 var(--clay-highlight),
+    inset 0 -3px 0 0 var(--clay-shade), var(--clay-drop);
+  --clay-shadow-pressed: inset 0 3px 8px oklch(0 0 0 / 0.5),
+    inset 0 -1px 0 0 oklch(1 0 0 / 0.05);
+  --clay-field: inset 0 2px 5px oklch(0 0 0 / 0.45),
+    inset 0 -1px 0 0 oklch(1 0 0 / 0.06);
+}
+
+@layer components {
+  .clay {
+    background: var(--card);
+    border-radius: var(--clay-radius);
+    box-shadow: var(--clay-shadow);
+  }
+  .clay-sm {
+    background: var(--card);
+    border-radius: var(--clay-radius-sm);
+    box-shadow: var(--clay-shadow);
+  }
+  .clay-field {
+    background: var(--muted);
+    border-radius: var(--clay-radius-sm);
+    box-shadow: var(--clay-field);
+  }
+  .clay-press {
+    transition: box-shadow 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+  }
+  .clay-press:active {
+    box-shadow: var(--clay-shadow-pressed);
+    transform: translateY(1px);
   }
 }

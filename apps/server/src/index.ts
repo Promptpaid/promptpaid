@@ -29,6 +29,7 @@ app.get("/health", (_req, res) => {
 )
 
 app.use("/waitlist", waitlistRouter);
+app.use("/api/waitlist", waitlistRouter);
 app.use("/auth", authRouter);
 
 app.listen(3000, () => {
