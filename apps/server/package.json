@@ -11,6 +11,7 @@
     "env:generate": "varlock codegen"
   },
   "dependencies": {
+    "@node-rs/argon2": "^2.2.1",
     "@promptpaid/db": "workspace:*",
     "@promptpaid/shared": "workspace:*",
     "cors": "^2.8.6",

@@ -10,10 +10,12 @@
     "env:generate": "varlock codegen"
   },
   "dependencies": {
+    "@promptpaid/shared": "workspace:*",
     "@promptpaid/ui": "workspace:*",
     "@swc/helpers": "^0.5.23",
     "@varlock/nextjs-integration": "1.2.2",
     "babel-plugin-react-compiler": "^1.0.0",
+    "framer-motion": "^14.0.0",
     "lucide-react": "catalog:",
     "next": "^16.3.4",
     "next-themes": "catalog:",

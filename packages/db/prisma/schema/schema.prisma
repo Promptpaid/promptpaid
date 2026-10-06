@@ -9,6 +9,41 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum UserTier {
+  FREE
+  PRO
+}
+
+model User {
+  id           String     @id @default(cuid())
+  name         String
+  email        String     @unique
+  phone        String     @unique
+  passwordHash String
+  country      String
+  languages     String[]
+  status       UserStatus @default(ACTIVE)
+  tier         UserTier   @default(ROOKIE)
+  createdAt    DateTime   @default(now())
+  sessions     Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
 model WaitlistEntry {
   id             String   @id @default(cuid())
   name           String

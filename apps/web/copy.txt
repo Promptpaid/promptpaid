@@ -1,0 +1,236 @@
+PROMPTPAID — WAITLIST LANDING PAGE COPY
+========================================
+Status: DRAFT. Send this file to the lawyer before it goes live.
+Rules followed: no "₦40k/month" claim; no "first payout in two weeks" claim;
+Rookie earnings stated as "up to" ₦15,000/month at full daily activity;
+14-day minimum before first withdrawal stated; ₦1,000 verification fee per
+withdrawal stated; no social proof or testimonials.
+Items marked [CONFIRM] need a founder answer before the lawyer sees it.
+Items marked [LAWYER] need legal review.
+
+
+------------------------------------------------------------------
+HERO
+------------------------------------------------------------------
+Eyebrow: Now building the waitlist
+
+Headline: Get paid for the conversations that train AI.
+
+Subhead: PromptPaid is an AI training platform. You have real conversations
+with AI models, get paid for the work that makes those models better, and AI
+buyers get higher-quality training data in return.
+
+Primary button: Join the waitlist
+Secondary link: See how it works
+
+
+------------------------------------------------------------------
+PROBLEM
+------------------------------------------------------------------
+Eyebrow: The problem
+
+Heading: Two sides are stuck.
+
+Body:
+For AI buyers: models trained on thin, generic data behave like it. Real
+conversations from real people — in the languages people actually speak —
+are the part that's hardest to buy.
+
+For people looking for work: most "earn from your phone" offers are vague
+about what you're paid, when you can withdraw, and what it costs to start.
+You find out the rules after you've committed.
+
+
+------------------------------------------------------------------
+SOLUTION
+------------------------------------------------------------------
+Eyebrow: The solution
+
+Heading: One platform, rules written down first.
+
+Body:
+PromptPaid pays people for the conversations AI buyers need, in nine
+languages across four countries. Every rate, threshold and fee is published
+up front — on this page and in the Trainer Agreement — so you know the rules
+before you start, not after.
+
+
+------------------------------------------------------------------
+HOW IT WORKS (3 STEPS)
+------------------------------------------------------------------
+Eyebrow: How it works
+
+Step 1 — Join the waitlist
+Add your details below. Joining the waitlist is free. We'll email you when
+your spot opens up.
+
+Step 2 — Get verified and trained
+We verify your identity and walk you through the tasks. You choose your tier
+when you activate. [CONFIRM: is there anything the user pays at this step
+besides the tier price?]
+
+Step 3 — Do the work and withdraw
+Have your daily conversations, reach your withdrawal threshold, and cash out.
+The 14-day minimum and the ₦1,000 verification fee per withdrawal apply —
+full details in Fees and rules.
+
+
+------------------------------------------------------------------
+FEES AND RULES
+------------------------------------------------------------------
+Eyebrow: Fees and rules
+
+Heading: Everything costs something. Here's ours.
+
+Intro: These are the Rookie tier figures. They apply from the moment you
+activate. Read them before you join — not after.
+
+[CONFIRM: is the tier price one-time or recurring?]
+
+Rookie tier price: ₦2,000
+Daily conversations: 5
+Rate per conversation: ₦100
+Withdrawal threshold: ₦8,000
+Referral bonus: 35% [CONFIRM: 35% of what, exactly?]
+
+Earnings at full daily activity:
+  Up to ₦500 per day
+  Up to ₦3,500 per week
+  Up to ₦15,000 per month
+These figures assume you complete all 5 conversations every day. They are an
+upper bound, not a guarantee. Miss a day, earn less.
+
+Before your first withdrawal:
+  - You must be active for at least 14 days from activation, regardless of
+    your balance.
+  - You must reach the ₦8,000 withdrawal threshold.
+  - A ₦1,000 verification fee is charged on every withdrawal. [LAWYER]
+
+Higher tiers (Elite and Legendary) are documented in the Trainer Agreement.
+
+[LAWYER: review all figures, the fee wording, and the earnings framing.]
+[CONFIRM: any eligibility restrictions — age, country residency, device?]
+
+
+------------------------------------------------------------------
+FAQ
+------------------------------------------------------------------
+Eyebrow: Questions
+
+Q: What is PromptPaid?
+A: An AI training platform. Members hold structured conversations with AI
+models and get paid for that work. AI buyers pay for the resulting training
+data.
+
+Q: How much can I earn?
+A: At full daily activity, a Rookie member can earn up to ₦15,000 a month —
+5 paid conversations a day at ₦100 each. It's an upper bound, not a
+guarantee: you earn for the days you work.
+
+Q: When can I withdraw for the first time?
+A: No earlier than 14 days after you activate, and only once you reach the
+₦8,000 withdrawal threshold. The 14-day minimum applies regardless of your
+balance.
+
+Q: Are there any fees?
+A: Yes. There is a ₦1,000 verification fee charged on every withdrawal.
+[LAWYER]
+
+Q: Is there a cost to join the waitlist?
+A: No. Joining the waitlist is free. The Rookie tier costs ₦2,000 when you
+activate. [CONFIRM: one-time or recurring?]
+
+Q: Which countries and languages are supported?
+A: Nigeria, South Africa, Ghana and Kenya. Members can work in English,
+Nigerian Pidgin, Yoruba, Igbo, Hausa, Afrikaans, Zulu, Swahili and French.
+
+Q: When do I start?
+A: We're opening access in batches. Join the waitlist and watch your email —
+we'll contact you when your spot opens.
+
+
+------------------------------------------------------------------
+FINAL CTA + FORM
+------------------------------------------------------------------
+Heading: Join the waitlist
+Subhead: Free to join. We'll email you when your spot opens.
+
+Form fields (labels):
+  Full name
+  Email address
+  Phone number  [dial-code select: Nigeria +234 / South Africa +27 /
+                 Ghana +233 / Kenya +254  +  number input]
+  Country       [Nigeria / South Africa / Ghana / Kenya]
+  Languages you speak  [checkbox chips, min 1: English / Nigerian Pidgin /
+                 Yoruba / Igbo / Hausa / Afrikaans / Zulu / Swahili / French]
+  What interests you  [checkbox chips, optional, max 10: AI training /
+                 Data labeling / Prompt writing / Content evaluation /
+                 Remote work / Part-time income / Referrals / Translation /
+                 Research / Community]
+
+Placeholders:
+  name: e.g. Adaeze Okafor
+  email: you@example.com
+  phone: 8012345678
+
+Consent checkbox text:
+  I agree to the Privacy Notice and consent to being contacted about the
+  waitlist.
+  ("Privacy Notice" links to /privacy)
+
+Submit button: Join the waitlist
+Loading button text: Joining…
+
+Honeypot field: name="website", visually hidden, aria-hidden, not focusable.
+Leave its label as "Leave this field empty" (screen-reader users who somehow
+reach it are told not to fill it).
+
+FORM MESSAGES
+  Success (201):
+    You're on the list! Check your email for a confirmation.
+
+  Duplicate (200):
+    You're already on the waitlist.
+
+  Validation (400, shown beside each field):
+    name:    Enter your name (at least 2 characters).
+    email:   Enter a valid email address.
+    phone:   Enter your phone number, e.g. 8012345678.
+    country: Choose your country.
+    languages: Pick at least one language.
+    consent: You must agree to the Privacy Notice to join.
+
+  Rate limited (429):
+    Too many attempts from this device. Please wait a few minutes and try
+    again.
+
+  Server error or no connection (500 / network failure):
+    We couldn't reach the server. Your details are saved below — please try
+    again in a moment.
+    (Values must stay in the form. Submit stays enabled.)
+
+
+------------------------------------------------------------------
+FOOTER
+------------------------------------------------------------------
+Wordmark: PromptPaid  [placeholder logo image, user swaps later]
+
+Links:
+  Terms            (/terms)
+  Privacy Notice   (/privacy)
+  Trainer Agreement (/trainer-agreement)
+  Refund Policy    (/refund-policy)
+
+Bottom line: © 2026 PromptPaid. All rights reserved.
+[LAWYER: footer disclaimers — earnings disclaimer, eligibility?]
+
+
+------------------------------------------------------------------
+LEGAL DRAFT PAGES (all four, same pattern)
+------------------------------------------------------------------
+Title: <Terms | Privacy Notice | Trainer Agreement | Refund Policy>
+Banner: Draft — pending legal review. This page is not final and is excluded
+        from search engines.
+Body: The final text for this page is being prepared with our lawyer and
+      will be published before PromptPaid launches.
+Page metadata: robots noindex, nofollow. [LAWYER: entire section]
