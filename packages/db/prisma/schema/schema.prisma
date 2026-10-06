@@ -15,8 +15,9 @@ enum UserStatus {
 }
 
 enum UserTier {
-  FREE
-  PRO
+  ROOKIE
+  ELITE
+  LEGENDARY
 }
 
 model User {
