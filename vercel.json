@@ -10,11 +10,11 @@
     "server": {
       "root": "apps/server",
       "framework": "express",
-      "entrypoint": "src/index.ts",
+      "entrypoint": "dist/index.mjs",
       "installCommand": "cd ../.. && pnpm install",
-      "buildCommand": "cd ../.. && pnpm run db:generate && cd apps/server && pnpm run env:generate && pnpm run check-types",
+      "buildCommand": "cd ../.. && pnpm run db:generate && cd apps/server && pnpm run env:generate && pnpm run check-types && pnpm run build",
       "functions": {
-        "src/index.ts": {
+        "dist/index.mjs": {
           "includeFiles": "{package.json,apps/server/.env.schema,node_modules/.bin/varlock,node_modules/varlock/**}"
         }
       }
