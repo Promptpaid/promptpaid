@@ -6,6 +6,8 @@
     "./*": "./src/*.ts"
   },
   "scripts": {
+    "build": "prisma generate",
+    "postinstall": "prisma generate",
     "check-types": "tsc --noEmit",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",

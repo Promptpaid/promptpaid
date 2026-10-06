@@ -5,7 +5,12 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        "prisma/generated/**"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -38,12 +43,17 @@
     "CI",
     "CORS_ORIGIN",
     "DATABASE_URL",
+    "DATABASE_URL_DIRECT",
+    "EMAIL_FROM",
     "NEXT_PUBLIC_SERVER_URL",
     "NODE_ENV",
+    "PUBLIC_POSTGRES_CLAIM_URL",
+    "RESEND_API_KEY",
     "VERCEL",
     "VERCEL_ENV",
     "VERCEL_PROJECT_PRODUCTION_URL",
     "VERCEL_URL",
+    "WEB_ORIGIN",
     "_VARLOCK_ENV_KEY"
   ],
   "globalDependencies": [".env*", "apps/*/.env*", "packages/*/.env*"]
