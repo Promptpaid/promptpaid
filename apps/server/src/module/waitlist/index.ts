@@ -1,0 +1,1 @@
+export { joinWaitlist } from "./service";

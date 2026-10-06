@@ -12,8 +12,11 @@
   },
   "dependencies": {
     "@promptpaid/db": "workspace:*",
+    "@promptpaid/shared": "workspace:*",
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "resend": "^6.32.0",
     "varlock": "catalog:",
     "zod": "catalog:"
   },

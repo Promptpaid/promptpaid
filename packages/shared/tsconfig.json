@@ -1,0 +1,6 @@
+{
+  "extends": "@promptpaid/config/tsconfig.base.json",
+  "include": [
+    "src/**/*.ts"
+  ]
+}

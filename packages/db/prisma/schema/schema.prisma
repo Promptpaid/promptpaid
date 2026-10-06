@@ -8,3 +8,17 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model WaitlistEntry {
+  id             String   @id @default(cuid())
+  name           String
+  email          String   @unique
+  phone          String   @unique
+  country        String
+  languages      String[]
+  interests      String[]
+  consentAt      DateTime
+  consentVersion String
+  createdAt      DateTime @default(now())
+  confirmationSentAt DateTime?
+}
