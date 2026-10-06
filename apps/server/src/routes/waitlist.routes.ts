@@ -1,5 +1,5 @@
 import { Router } from "express";
-import rateLimit from "express-rate-limit";
+import { rateLimit } from "express-rate-limit";
 import { z } from "zod";
 import { waitlistSchema } from "@promptpaid/shared";
 import { joinWaitlist } from "../module/waitlist/index";
