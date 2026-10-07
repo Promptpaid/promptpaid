@@ -7,3 +7,5 @@ export {
 export type { WaitlistInput } from "./waitlist";
 export { signUpSchema } from "./signup";
 export type { SignupInput } from "./signup"
+export { loginSchema } from "./login"
+export type { LoginInput } from "./login"

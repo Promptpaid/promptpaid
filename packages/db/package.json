@@ -19,10 +19,12 @@
     "@neondatabase/serverless": "^1.1.0",
     "@prisma/adapter-neon": "^7.10.0",
     "@prisma/client": "^7.10.0",
+    "cookie-parser": "^1.4.7",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@promptpaid/config": "workspace:*",
+    "@types/cookie-parser": "^1.4.10",
     "prisma": "^7.10.0",
     "typescript": "catalog:",
     "varlock": "catalog:"

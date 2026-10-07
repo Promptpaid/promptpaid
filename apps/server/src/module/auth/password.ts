@@ -36,6 +36,14 @@ export async function hashPassword(plaintext: string): Promise<string> {
 }
 
 /**
+ * A valid Argon2id hash with the same options as above, used to run a
+ * password check when the email is unknown so response times do not
+ * reveal whether an account exists.
+ */
+export const DUMMY_HASH =
+    "$argon2id$v=19$m=19456,t=2,p=1$p/zf2QdY18cnkVaHG3ollA$KVXJNhKeJprihmapq01aeorKRGnGl95Cdw/UlWdUd94";
+
+/**
  * Verify a plaintext password against a stored Argon2 hash.
  *
  * Returns true if the password matches, false otherwise.

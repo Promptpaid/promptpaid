@@ -28,21 +28,12 @@ model User {
   passwordHash String
   country      String
   languages     String[]
-  status       UserStatus @default(ACTIVE)
-  tier         UserTier   @default(ROOKIE)
-  createdAt    DateTime   @default(now())
-  sessions     Session[]
-}
-
-model Session {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tokenHash String   @unique
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  @@index([userId])
+  status              UserStatus @default(ACTIVE)
+  tier                UserTier   @default(ROOKIE)
+  failedLoginAttempts Int        @default(0)
+  lockedUntil         DateTime?
+  createdAt           DateTime   @default(now())
+  sessions            Session[]
 }
 
 model WaitlistEntry {

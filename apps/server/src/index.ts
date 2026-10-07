@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import cookieParser from 'cookie-parser'
 
 import { ENV } from "./env.server";
 import authRouter from "./routes/auth.routes";
@@ -11,8 +12,11 @@ app.use(
   cors({
     origin: ENV.CORS_ORIGIN,
     methods: ["GET", "POST", "OPTIONS"],
+    credentials: true
   }),
 );
+
+app.use(cookieParser())
 
 app.set("trust proxy", 1);
 app.use(express.json({ limit: "10kb" }));
