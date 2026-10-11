@@ -65,7 +65,7 @@ router.post("/signup", limiter, requireJson, requireSameOrigin, async (req, res)
     }
 });
 
-router.post("/login", loginLimiter, async (req, res) => {
+router.post("/login", loginLimiter, requireJson, requireSameOrigin, async (req, res) => {
     try {
         const parsed = loginSchema.safeParse(req.body);
         if (!parsed.success) {
@@ -118,7 +118,7 @@ router.get("/me", requireAuth, (req, res) => {
     });
 });
 
-router.post("/logout", requireJson, requireSameOrigin, requireAuth, async (req, res) => {
+router.post("/logout", requireSameOrigin, requireAuth, async (req, res) => {
     try {
         await deleteSessionById(req.sessionId!);
         clearSessionCookie(res);
@@ -132,7 +132,7 @@ router.post("/logout", requireJson, requireSameOrigin, requireAuth, async (req, 
     }
 });
 
-router.post("/logout-all", requireJson, requireSameOrigin, requireAuth, async (req, res) => {
+router.post("/logout-all", requireSameOrigin, requireAuth, async (req, res) => {
     try {
         await deleteSessionsForUser(req.user!.id);
         clearSessionCookie(res);
