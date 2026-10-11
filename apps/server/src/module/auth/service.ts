@@ -1,5 +1,13 @@
 import type { LoginInput, SignupInput } from "@promptpaid/shared";
-import { createSession, createUser, findUserByEmail, recordFailedLogin, resetFailedLogin } from "./repo";
+import { USER_STATUS } from "@promptpaid/shared";
+import {
+    createSession,
+    createUser,
+    findUserByEmail,
+    recordFailedLogin,
+    recordFailedLoginForUnknownUser,
+    resetFailedLogin,
+} from "./repo";
 import { DUMMY_HASH, hashPassword, verifyPassword } from "./password";
 import { generateSessionData, SESSION_TTL_MS } from "./session";
 
@@ -48,8 +56,11 @@ export async function login(input: LoginInput) {
     const user = await findUserByEmail(email);
 
     if (!user) {
-        // Same cost as a real check so timing doesn't reveal unknown emails.
+        // Run the Argon2 verify and a matching no-op write so the unknown-email
+        // path costs the same as the wrong-password path and cannot be told
+        // apart by response time.
         await verifyPassword(DUMMY_HASH, input.password);
+        await recordFailedLoginForUnknownUser();
         return genericFailure;
     }
 
@@ -57,8 +68,8 @@ export async function login(input: LoginInput) {
         return genericFailure;
     }
 
-    if (user.status !== "ACTIVE") {
-        // TODO: improve this message later so frozen accounts get their own notice.
+    if (user.status !== USER_STATUS.ACTIVE) {
+        // TODO: improve this message later so suspended accounts get their own notice.
         return genericFailure;
     }
 

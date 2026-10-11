@@ -20,7 +20,7 @@ const limiter = rateLimit({
 
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    limit: 10, // 10 login attempts per IP per 15 minutes
+    limit: 100, // 100 login attempts per IP per 15 minutes; per-account lockout (5, DB-backed) is the real protection
     standardHeaders: true,
     legacyHeaders: false,
     message: { status: "rate_limited", message: "Too many attempts. Try again later." },

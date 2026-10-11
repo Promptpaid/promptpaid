@@ -52,6 +52,21 @@ export async function resetFailedLogin(userId: string) {
     });
 }
 
+/**
+ * No-op write used on the unknown-email login path.
+ *
+ * The wrong-password path performs a real `recordFailedLogin` write. Without a
+ * matching round trip here, the unknown-email path would answer noticeably
+ * faster and leak which emails are registered. This UPDATE matches no row
+ * (sentinel id) so it is safe, but still costs one database round trip.
+ */
+export async function recordFailedLoginForUnknownUser() {
+    await db.user.updateMany({
+        where: { id: "__unknown_email__" },
+        data: { failedLoginAttempts: { increment: 1 } },
+    });
+}
+
 export async function createSession(userId: string, tokenHash: string, expiresAt: Date) {
     return db.session.create({
         data: { userId, tokenHash, expiresAt },

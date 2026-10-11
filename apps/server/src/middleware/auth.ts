@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { USER_STATUS } from "@promptpaid/shared";
 import {
     deleteSessionById,
     deleteSessionByTokenHash,
@@ -46,7 +47,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
             return res.status(401).json(unauthorized);
         }
 
-        if (session.user.status !== "ACTIVE") {
+        if (session.user.status !== USER_STATUS.ACTIVE) {
             await deleteSessionById(session.id);
             clearSessionCookie(res);
             return res.status(401).json(unauthorized);
