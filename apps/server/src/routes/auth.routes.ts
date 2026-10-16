@@ -2,11 +2,10 @@ import { Router } from "express";
 import { rateLimit } from "express-rate-limit";
 import { z } from "zod";
 import { loginSchema, signUpSchema } from "@promptpaid/shared";
-import { login, SESSION_COOKIE_NAME, SESSION_TTL_MS, signup } from "@/module/auth";
+import { login, signup } from "@/module/auth";
 import { deleteSessionById, deleteSessionsForUser } from "@/module/auth/repo";
-import { clearSessionCookie, requireAuth } from "@/middleware/auth";
+import { clearSessionCookie, requireAuth, setSessionCookie } from "@/middleware/auth";
 import { requireJson, requireSameOrigin } from "@/middleware/security";
-import { ENV } from "@/env.server";
 
 const router = Router();
 
@@ -52,6 +51,8 @@ router.post("/signup", limiter, requireJson, requireSameOrigin, async (req, res)
             });
         }
 
+        setSessionCookie(res, result.token);
+
         return res.status(201).json({
             status: "created",
             user: result.user,
@@ -84,13 +85,7 @@ router.post("/login", loginLimiter, requireJson, requireSameOrigin, async (req, 
             });
         }
 
-        res.cookie(SESSION_COOKIE_NAME, result.token, {
-            httpOnly: true,
-            secure: ENV.NODE_ENV === "production",
-            sameSite: "lax",
-            path: "/",
-            maxAge: SESSION_TTL_MS,
-        });
+        setSessionCookie(res, result.token);
 
         return res.status(200).json({
             status: "ok",

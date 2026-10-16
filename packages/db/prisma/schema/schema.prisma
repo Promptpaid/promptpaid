@@ -11,7 +11,17 @@ datasource db {
 
 enum UserStatus {
   ACTIVE
+  FROZEN
   SUSPENDED
+}
+
+enum OnboardingStatus {
+  CREATED
+  PROFILE_COMPLETE
+  SCREENING_IN_PROGRESS
+  SCREENING_PASSED
+  TIER_CHOSEN
+  ACTIVATED
 }
 
 enum UserTier {
@@ -28,12 +38,22 @@ model User {
   passwordHash String
   country      String
   languages     String[]
+  skills              String[]
+  timezone            String?
+  profileCompletedAt  DateTime?
   status              UserStatus @default(ACTIVE)
-  tier                UserTier   @default(ROOKIE)
+  onboardingStatus    OnboardingStatus @default(CREATED)
+  // Paid-for and activated tier. NULL means no paid tier yet; only the
+  // later payment and activation feature writes this column.
+  tier                UserTier?
+  // Tier the user picked at onboarding step 7. Grants no benefits;
+  // choosing never touches `tier`.
+  selectedTier        UserTier?
   failedLoginAttempts Int        @default(0)
   lockedUntil         DateTime?
   createdAt           DateTime   @default(now())
   sessions            Session[]
+  screeningAttempts   Attempt[]
 }
 
 model WaitlistEntry {

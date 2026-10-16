@@ -16,6 +16,13 @@ const INTERNATIONAL_PHONE = /^\+\d{8,15}$/;
 const MAX_FAILED_ATTEMPTS = 5;
 const LOCK_MINUTES = 15;
 
+/** Generate, persist and return a fresh session token for a user. */
+async function issueSession(userId: string): Promise<string> {
+    const { rawToken, hashedToken } = generateSessionData();
+    await createSession(userId, hashedToken, new Date(Date.now() + SESSION_TTL_MS));
+    return rawToken;
+}
+
 export async function signup(input: SignupInput) {
     const name = input.name.trim();
     const email = input.email.trim().toLowerCase();
@@ -32,8 +39,10 @@ export async function signup(input: SignupInput) {
     if (result.status === "duplicate") return { status: "duplicate" as const };
 
     const user = result.user;
+    const token = await issueSession(user.id);
     return {
         status: "created" as const,
+        token,
         user: {
             id: user.id,
             name: user.name,
@@ -42,6 +51,7 @@ export async function signup(input: SignupInput) {
             country: user.country,
             languages: user.languages,
             status: user.status,
+            onboardingStatus: user.onboardingStatus,
             tier: user.tier,
             createdAt: user.createdAt,
         },
@@ -69,7 +79,7 @@ export async function login(input: LoginInput) {
     }
 
     if (user.status !== USER_STATUS.ACTIVE) {
-        // TODO: improve this message later so suspended accounts get their own notice.
+        // TODO: improve this message later so frozen accounts get their own notice.
         return genericFailure;
     }
 
@@ -87,12 +97,11 @@ export async function login(input: LoginInput) {
 
     await resetFailedLogin(user.id);
 
-    const { rawToken, hashedToken } = generateSessionData();
-    await createSession(user.id, hashedToken, new Date(Date.now() + SESSION_TTL_MS));
+    const token = await issueSession(user.id);
 
     return {
         status: "ok" as const,
-        token: rawToken,
+        token,
         user: {
             id: user.id,
             name: user.name,

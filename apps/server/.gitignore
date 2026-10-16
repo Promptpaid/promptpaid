@@ -47,6 +47,9 @@ lerna-debug.log*
 .DS_Store
 *.pem
 
+# local question banks (never commit the real bank; only clearly marked samples)
+scripts/real-bank/
+
 # local db
 *.db*
 

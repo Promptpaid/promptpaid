@@ -61,3 +61,73 @@ the per-account lockout (5 failures, stored in Postgres), which works across
 instances. The `express-rate-limit` store is in-memory: on Vercel it resets on
 cold starts and is not shared across instances, so treat it as best-effort
 only.
+
+## 2026-10-11 — Onboarding profile setup (step 1)
+
+### Two status fields, not one
+
+**Decision:** account standing and journey position are separate. `UserStatus`
+is the account switch — `{ ACTIVE, FROZEN }` — and every request that needs an
+enabled account checks it. `OnboardingStatus` is the journey —
+`{ CREATED, PROFILE_COMPLETE, SCREENING_IN_PROGRESS, SCREENING_PASSED,
+TIER_CHOSEN, ACTIVATED }`. The onboarding gate passes only when the account is
+`ACTIVE` **and** the journey status is in the action's allowed list.
+
+**Why:** "frozen" is not a step in the journey; it is a switch that overrides
+every step. Modelling it as one of the journey states would let a frozen user
+sit at a valid-looking step. This also keeps the existing login and middleware
+frozen checks (`USER_STATUS.ACTIVE`) unchanged in shape.
+
+**Supersedes** the earlier "`SUSPENDED` vs `FROZEN`" mapping decision: the
+value is now literally `FROZEN`; `SUSPENDED` no longer exists.
+
+### Status wording lives in `@promptpaid/shared`
+
+`ONBOARDING_STATUS`, the next-step map, and the action table
+(`ACTION_ALLOWED_STATUSES`) live in `packages/shared`. `NEXT_STEP` wording is
+shared so the web app and the server cannot drift.
+
+### `POST /onboarding/profile`, not `PUT`
+
+**Decision:** use `POST`, matching every other write endpoint. Saving the same
+profile twice is safe and produces the same state (the endpoint is idempotent),
+so `PUT`'s one guarantee is preserved without a new CORS method.
+
+### Conditional update for the gate
+
+**Decision:** the profile save is a single `updateMany` that only touches a row
+whose `onboardingStatus` is still allowed, and the caller branches on the
+affected count. If the count is 0 the user moved first (e.g. screening started
+in another tab) and the request returns `409`.
+
+**Why:** checking status in one query and updating in another lets two requests
+both pass the check. The conditional update makes check-and-write one atomic
+action.
+
+### Signup now starts a session
+
+**Decision:** `POST /auth/signup` issues a session cookie (same helper as
+login), so a freshly created account enters onboarding authenticated instead of
+having to log in again.
+
+### Languages and timezone
+
+**Decision:** all nine languages are listed in `@promptpaid/shared` with an
+`open` flag; only English is open at launch. The user's timezone is stored as an
+IANA name (e.g. `Africa/Lagos`), never an offset, and validated with
+`Intl.DateTimeFormat` on the server. Default timezone is suggested from country
+(NG/ZA/GH/KE) but editable.
+
+## 2026-10-11 — D-015: migrations are the source of truth
+
+**Decision:** the schema is managed by committed Prisma migrations. `db push` is
+allowed only on a throwaway local database. The database had drifted (login and
+profile columns were pushed without a migration), so the migration history was
+reset to a single squashed `baseline` migration that matches `schema.prisma`
+exactly.
+
+**Why:** the dev database was wiped anyway (test accounts only), and any shared
+database from this point on must be reproducible from the migrations folder. A
+dev-only seed script (`pnpm -F server dev:set-status`) replaces the old habit of
+hand-editing statuses, and refuses to run outside development.
+

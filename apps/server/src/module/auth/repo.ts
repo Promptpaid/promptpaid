@@ -1,5 +1,6 @@
 import { db } from "@/services";
-import type { SignupInput } from "@promptpaid/shared";
+import type { Database } from "@promptpaid/db";
+import type { SignupInput, UserStatus } from "@promptpaid/shared";
 
 function isUniqueViolation(err: unknown): boolean {
     return (
@@ -92,6 +93,32 @@ export async function deleteSessionByTokenHash(tokenHash: string) {
 
 export async function deleteSessionsForUser(userId: string) {
     await db.session.deleteMany({ where: { userId } });
+}
+
+/**
+ * Single writers for the account-status column and for session revocation.
+ * The service layer suspends an account only through `setAccountStatus`, and
+ * always pairs it with `deleteUserSessions` in the same transaction, so a
+ * suspended user keeps no live session anywhere.
+ */
+export async function setAccountStatus(
+    userId: string,
+    status: Extract<UserStatus, "SUSPENDED">,
+    client: Pick<Database, "user"> = db,
+) {
+    const result = await client.user.updateMany({
+        where: { id: userId },
+        data: { status },
+    });
+    return { count: result.count };
+}
+
+export async function deleteUserSessions(
+    userId: string,
+    client: Pick<Database, "session"> = db,
+) {
+    const result = await client.session.deleteMany({ where: { userId } });
+    return { count: result.count };
 }
 
 export async function slideSessionExpiry(id: string, expiresAt: Date) {

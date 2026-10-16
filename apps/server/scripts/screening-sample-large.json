@@ -1,0 +1,366 @@
+{
+  "_note": "TEST DATA ONLY — larger sample screening bank for development (random-selection and shuffle testing). Do NOT use in production. Correct answers live in this file because it is the server-side question source; they must never be sent to the web client.",
+  "_testData": true,
+  "passages": [
+    {
+      "key": "large-passage-1",
+      "language": "english",
+      "text": "Tunde manages a phone repair shop in Ikeja with four technicians. Customers used to complain that repairs took too long and nobody explained the costs. Tunde introduced a simple paper ticket for every phone: the customer's name, the fault, the agreed price, and the promised day. The ticket is pinned to the phone's bag so anyone can see its state. Each morning the team spends ten minutes moving tickets across a board with three columns: waiting, fixing, and ready. Any ticket older than three days gets a red sticker, and Tunde calls that customer personally. Within two months, complaints dropped sharply and repeat customers doubled. Tunde believes the tickets work because every phone has a visible owner, a visible price, and a visible age."
+    },
+    {
+      "key": "large-passage-2",
+      "language": "english",
+      "text": "Ngozi coordinates ten volunteer tutors for weekend classes in Enugu. Attendance was poor because tutors cancelled without notice and students stopped coming. She set two rules. First, any tutor who cannot come must find their own replacement and message the group by Friday evening. Second, every class ends with a five-question quiz, and the scores are posted on the notice board every Monday. Tutors whose students improve three weeks in a row choose their preferred time slot first. After one term, cancellations almost disappeared and average quiz scores rose by a third. Ngozi says the turnaround came from making absence everyone's problem to solve and making progress visible to all."
+    },
+    {
+      "key": "large-passage-3",
+      "language": "english",
+      "text": "Kwame delivers bottled water in Accra with a small van. Fuel costs were eating his profit, so he tracked every trip for a month. He found that half his trips carried fewer than ten bottles and that he crossed the same junction five times a day. He redrew his route into two loops, set a minimum order of fifteen bottles for free delivery, and charged a small fee below that. He also calls his regular shops every Sunday evening to confirm Monday orders instead of driving around to ask. Fuel use fell by a third while bottles delivered stayed the same. Kwame credits the logbook: once he measured the waste, the fixes were obvious."
+    }
+  ],
+  "questions": [
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Choose the sentence with correct verb form.",
+      "options": ["They has arrived early.", "They have arrived early.", "They have arrive early.", "They has arrive early."],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "What is the opposite of \"generous\"?",
+      "options": ["kind", "stingy", "brave", "honest"],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Choose the correctly punctuated sentence.",
+      "options": [
+        "After the meeting we, went home.",
+        "After the meeting, we went home.",
+        "After, the meeting we went home.",
+        "After the meeting we went, home."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Complete the sentence: She ___ for this company since 2021.",
+      "options": ["works", "has worked", "is working now only", "worked only then"],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Which word means \"to make something shorter\"?",
+      "options": ["lengthen", "shorten", "widen", "strengthen"],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Choose the sentence with the correct preposition.",
+      "options": [
+        "He is good in mathematics.",
+        "He is good at mathematics.",
+        "He is good on mathematics.",
+        "He is good for mathematics."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "What does \"reliable\" mean?",
+      "options": ["fast", "cheap", "dependable", "famous"],
+      "correctOptionIndex": 2
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Choose the correct plural form.",
+      "options": ["boxs", "boxes", "boxies", "boxen"],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Which sentence is in the passive voice?",
+      "options": [
+        "The technician fixed the phone.",
+        "The phone was fixed by the technician.",
+        "The technician is fixing phones daily.",
+        "Fix the phone quickly."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Choose the best reply: \"Could you send the invoice today?\"",
+      "options": [
+        "Yes, I will send it before 5pm today.",
+        "Maybe I can try if I want.",
+        "Invoice is not my work.",
+        "Tomorrow is another day."
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "What is a synonym for \"purchase\"?",
+      "options": ["sell", "buy", "borrow", "lend"],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Choose the correct article: ___ honest person.",
+      "options": ["A", "An", "The only", "No article"],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Which sentence uses \"their\" correctly?",
+      "options": [
+        "Their going to the market.",
+        "The team finished their work.",
+        "Their is a problem here.",
+        "Give the bag to their."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Complete the sentence: By Friday, we ___ all the tickets.",
+      "options": ["will clear", "will have cleared", "have cleared yesterday", "clears"],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "What does the phrase \"follow up\" mean at work?",
+      "options": ["to follow someone home", "to check on progress after an earlier step", "to copy a colleague", "to end a task"],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "What problem did Tunde's paper ticket solve first?",
+      "options": [
+        "Technicians had no tools.",
+        "Nobody knew a phone's owner, price, or promised day.",
+        "The shop was too small.",
+        "Customers refused to pay."
+      ],
+      "correctOptionIndex": 1,
+      "passageKey": "large-passage-1"
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "What does a red sticker on a ticket mean?",
+      "options": [
+        "The repair is finished.",
+        "The phone is older than three days and Tunde calls the customer.",
+        "The price has increased.",
+        "The customer cancelled."
+      ],
+      "correctOptionIndex": 1,
+      "passageKey": "large-passage-1"
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "Why did repeat customers double at the repair shop?",
+      "options": [
+        "Tunde hired more technicians.",
+        "Complaints fell because every phone had a visible owner, price, and age.",
+        "Repairs became free.",
+        "The shop moved to a bigger space."
+      ],
+      "correctOptionIndex": 1,
+      "passageKey": "large-passage-1"
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "What must a tutor who cannot attend do?",
+      "options": [
+        "Cancel quietly and say nothing.",
+        "Find their own replacement and message the group by Friday evening.",
+        "Ask Ngozi to teach the class.",
+        "Post the quiz scores early."
+      ],
+      "correctOptionIndex": 1,
+      "passageKey": "large-passage-2"
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "How did posting quiz scores help attendance?",
+      "options": [
+        "It shamed the tutors.",
+        "It made student progress visible, so tutors and students stayed engaged.",
+        "It replaced the need for tutors.",
+        "It shortened the classes."
+      ],
+      "correctOptionIndex": 1,
+      "passageKey": "large-passage-2"
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "What reward do tutors with improving students receive?",
+      "options": [
+        "Extra pay.",
+        "First choice of preferred time slot.",
+        "Fewer quizzes to mark.",
+        "A public holiday."
+      ],
+      "correctOptionIndex": 1,
+      "passageKey": "large-passage-2"
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "What did Kwame's logbook reveal?",
+      "options": [
+        "His van was too old.",
+        "Half his trips carried few bottles and he repeated the same junction daily.",
+        "His customers never paid.",
+        "Water prices were falling."
+      ],
+      "correctOptionIndex": 1,
+      "passageKey": "large-passage-3"
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "Why did Kwame set a fifteen-bottle minimum for free delivery?",
+      "options": [
+        "To punish small shops.",
+        "To stop wasteful near-empty trips while keeping bottles delivered steady.",
+        "To raise the price of water.",
+        "To avoid Sunday calls."
+      ],
+      "correctOptionIndex": 1,
+      "passageKey": "large-passage-3"
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "What does Kwame do every Sunday evening?",
+      "options": [
+        "Drives around to ask for orders.",
+        "Calls regular shops to confirm Monday orders.",
+        "Counts his fuel money.",
+        "Washes the van."
+      ],
+      "correctOptionIndex": 1,
+      "passageKey": "large-passage-3"
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "Your queue is long and a regular customer asks to jump ahead. What do you do?",
+      "options": [
+        "Let them jump since they are regular.",
+        "Politely keep the order and explain everyone waits their turn.",
+        "Serve them quietly when others look away.",
+        "Tell them to come back tomorrow."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "You overhear a teammate giving a customer wrong price information. What do you do?",
+      "options": [
+        "Laugh along with the teammate.",
+        "Correct it gently on the spot and confirm the right price.",
+        "Report the customer for asking.",
+        "Say nothing; it is not your sale."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "A task you were given conflicts with an earlier promise to another customer. What do you do?",
+      "options": [
+        "Drop the earlier promise silently.",
+        "Do both badly at the same time.",
+        "Flag the conflict early and agree new expectations with those affected.",
+        "Pretend you never saw the new task."
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "You find a wallet with cash at your work station. What do you do?",
+      "options": [
+        "Keep the cash and hand in the empty wallet.",
+        "Hand it in untouched through the proper channel immediately.",
+        "Share the cash with coworkers.",
+        "Leave it there for days."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "Your supervisor criticises your work in front of the team. What do you do?",
+      "options": [
+        "Argue back loudly to defend yourself.",
+        "Listen, ask what good looks like, and follow up afterwards.",
+        "Stop working for the rest of the day.",
+        "Criticise a teammate in return."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "The system is down and customers are waiting. What do you do first?",
+      "options": [
+        "Tell every customer to leave.",
+        "Acknowledge the wait, give honest updates, and record orders manually.",
+        "Hide until the system returns.",
+        "Blame the technical team to customers."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "A friend asks for another customer's phone number from your records. What do you do?",
+      "options": [
+        "Share it; they are your friend.",
+        "Refuse and protect customer data.",
+        "Share only the address instead.",
+        "Ask your friend to pay for it."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "You are asked to do something unsafe to finish faster. What do you do?",
+      "options": [
+        "Do it quickly before anyone sees.",
+        "Refuse, explain the risk, and suggest a safe way.",
+        "Ask a new teammate to do it instead.",
+        "Do it but complain later."
+      ],
+      "correctOptionIndex": 1
+    }
+  ]
+}

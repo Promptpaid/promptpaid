@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser'
 
 import { ENV } from "./env.server";
 import authRouter from "./routes/auth.routes";
+import onboardingRouter from "./routes/onboarding.routes";
+import screeningRouter from "./routes/screening.routes";
 import waitlistRouter from "./routes/waitlist.routes";
 
 const app = express();
@@ -35,6 +37,8 @@ app.get("/health", (_req, res) => {
 app.use("/waitlist", waitlistRouter);
 app.use("/api/waitlist", waitlistRouter);
 app.use("/auth", authRouter);
+app.use("/onboarding", onboardingRouter);
+app.use("/screening", screeningRouter);
 
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000");

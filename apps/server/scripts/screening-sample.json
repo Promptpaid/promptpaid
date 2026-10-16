@@ -1,0 +1,212 @@
+{
+  "_note": "TEST DATA ONLY — sample screening bank for development. Do NOT use in production. Replace with the real bank before launch. Correct answers live in this file because it is the server-side question source; they must never be sent to the web client.",
+  "_testData": true,
+  "passages": [
+    {
+      "key": "sample-passage-1",
+      "language": "english",
+      "text": "Amina runs a small delivery business in Lagos with six riders. Last year she lost two big clients because riders arrived late and nobody told the customers. She made three changes. First, every rider must confirm each pickup in the group chat within five minutes. Second, if a rider is delayed by more than fifteen minutes, the rider must call the customer directly and offer a new time. Third, every Friday Amina reads all the week's complaints aloud at the team meeting and the team agrees on one fix. After four months, late deliveries fell by half and one lost client returned. Amina says the system works because problems are reported early, the customer always hears bad news first from the rider, and the team fixes only one thing at a time."
+    }
+  ],
+  "questions": [
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Choose the correct sentence.",
+      "options": [
+        "She have finished the report yesterday.",
+        "She has finished the report.",
+        "She have finish the report.",
+        "She has finish the report yesterday."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Choose the word that best completes the sentence: The customer was ___ about the delay.",
+      "options": ["understanding", "understand", "understoodly", "understandablely"],
+      "correctOptionIndex": 0
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Which sentence uses the apostrophe correctly?",
+      "options": [
+        "The riders bikes are new.",
+        "The rider's bikes are new.",
+        "The riders' bikes are new.",
+        "The riders's bikes are new."
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Choose the correct past tense: By the time she arrived, the meeting ___.",
+      "options": ["already started", "has already started", "had already started", "have already started"],
+      "correctOptionIndex": 2
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "What does the word \"deadline\" mean?",
+      "options": [
+        "A line that is no longer used",
+        "The latest time something must be finished",
+        "A queue of people waiting",
+        "The first draft of a message"
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Choose the sentence with correct subject-verb agreement.",
+      "options": [
+        "Neither of the riders were late.",
+        "Each of the riders were on time.",
+        "Both of the riders was on time.",
+        "Each of the riders was on time."
+      ],
+      "correctOptionIndex": 3
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Which word is a synonym for \"accurate\"?",
+      "options": ["precise", "speedy", "polite", "brief"],
+      "correctOptionIndex": 0
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Choose the correctly spelled word.",
+      "options": ["seperate", "separate", "separete", "sepparate"],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Complete the sentence: If the rider had called earlier, the customer ___ waited.",
+      "options": [
+        "would not have",
+        "will not have",
+        "would not has",
+        "will not has"
+      ],
+      "correctOptionIndex": 0
+    },
+    {
+      "section": "LANGUAGE",
+      "language": "english",
+      "prompt": "Which sentence is the most professional reply to a customer?",
+      "options": [
+        "Sorry o, traffic held me.",
+        "Apologies for the delay; I am 15 minutes away and will update you on arrival.",
+        "I dey come, just hold on.",
+        "It is not my fault, the road is bad."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "Why did Amina lose two big clients last year?",
+      "options": [
+        "Her prices were too high.",
+        "Riders arrived late and customers were not informed.",
+        "She had only six riders.",
+        "She held team meetings on Fridays."
+      ],
+      "correctOptionIndex": 1,
+      "passageKey": "sample-passage-1"
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "What must a rider do when delayed by more than fifteen minutes?",
+      "options": [
+        "Confirm the pickup in the group chat.",
+        "Wait until Friday's meeting to report it.",
+        "Call the customer directly and offer a new time.",
+        "Ask Amina to call the customer."
+      ],
+      "correctOptionIndex": 2,
+      "passageKey": "sample-passage-1"
+    },
+    {
+      "section": "READING",
+      "language": "english",
+      "prompt": "Why does the team agree on only one fix each Friday?",
+      "options": [
+        "Because only one complaint arrives per week.",
+        "Because fixing one thing at a time is what made the system work.",
+        "Because Amina reads only one complaint aloud.",
+        "Because the riders vote against bigger changes."
+      ],
+      "correctOptionIndex": 1,
+      "passageKey": "sample-passage-1"
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "You are running late for a delivery and the customer calls. What do you do?",
+      "options": [
+        "Ignore the call and hurry to the address.",
+        "Answer, apologise, give an honest arrival time, and confirm on arrival.",
+        "Tell the customer the delay is the company's fault.",
+        "Promise to arrive in two minutes even though you are far away."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "You notice a teammate marked a failed delivery as completed. What do you do?",
+      "options": [
+        "Do the same so your records look good too.",
+        "Confront the teammate angrily in front of customers.",
+        "Report it truthfully through the proper channel.",
+        "Ignore it since it does not affect you."
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "A customer offers you extra cash to skip the queue and deliver theirs first. What do you do?",
+      "options": [
+        "Accept it; nobody will know.",
+        "Accept it and share it with the team.",
+        "Politely decline and follow the scheduled order.",
+        "Ask for even more money."
+      ],
+      "correctOptionIndex": 2
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "You receive instructions that are unclear and the deadline is close. What do you do?",
+      "options": [
+        "Guess and submit something on time.",
+        "Ask for clarification immediately and propose how you will proceed.",
+        "Wait until after the deadline to ask questions.",
+        "Copy a teammate's work."
+      ],
+      "correctOptionIndex": 1
+    },
+    {
+      "section": "JUDGMENT",
+      "language": "english",
+      "prompt": "You made a mistake that cost the team time. At the Friday review, what do you do?",
+      "options": [
+        "Blame the traffic so the team moves on.",
+        "Stay silent and hope nobody noticed.",
+        "Own the mistake, explain what you will change, and accept the fix.",
+        "Say the instructions were wrong."
+      ],
+      "correctOptionIndex": 2
+    }
+  ]
+}

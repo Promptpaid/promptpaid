@@ -7,6 +7,9 @@
     "check-types": "tsc --noEmit",
     "compile": "bun build --compile --no-compile-autoload-dotenv --minify --sourcemap --bytecode ./src/index.ts --outfile server",
     "dev": "tsx watch src/index.ts",
+    "dev:set-status": "tsx scripts/dev-set-status.ts",
+    "dev:load-questions": "tsx scripts/load-questions.ts",
+    "dev:clear-questions": "tsx scripts/clear-questions.ts",
     "start": "node dist/index.mjs",
     "env:generate": "varlock codegen"
   },

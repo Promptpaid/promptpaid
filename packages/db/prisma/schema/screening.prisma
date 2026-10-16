@@ -1,0 +1,95 @@
+enum ScreeningSection {
+  LANGUAGE
+  READING
+  CHAT
+  JUDGMENT
+}
+
+enum ScreeningAttemptStatus {
+  OPEN
+  SUBMITTED
+  EXPIRED
+}
+
+model Passage {
+  id        String     @id @default(cuid())
+  language  String
+  text      String     @db.Text
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  questions Question[]
+
+  @@index([language, active])
+}
+
+model Question {
+  id                 String           @id @default(cuid())
+  section            ScreeningSection
+  language           String
+  prompt             String           @db.Text
+  options            String[]
+  correctOptionIndex Int
+  passageId          String?
+  passage            Passage?         @relation(fields: [passageId], references: [id], onDelete: SetNull)
+  active             Boolean          @default(true)
+  pointsTenths       Int
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  attemptQuestions   AttemptQuestion[]
+
+  @@index([section, language, active])
+  @@index([passageId])
+}
+
+model Attempt {
+  id                   String                 @id @default(cuid())
+  userId               String
+  user                 User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attemptNumber        Int
+  status               ScreeningAttemptStatus @default(OPEN)
+  startedAt            DateTime               @default(now())
+  deadline             DateTime
+  submittedAt          DateTime?
+  languageScoreTenths  Int                    @default(0)
+  readingScoreTenths   Int                    @default(0)
+  chatScoreTenths      Int                    @default(0)
+  judgmentScoreTenths  Int                    @default(0)
+  totalScoreTenths     Int                    @default(0)
+  maxTenths            Int
+  passed               Boolean?
+  scored90Plus         Boolean                @default(false)
+  questions            AttemptQuestion[]
+
+  @@unique([userId, attemptNumber])
+  @@index([userId, status])
+  @@index([userId])
+}
+
+model AttemptQuestion {
+  id                   String           @id @default(cuid())
+  attemptId            String
+  attempt              Attempt          @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId           String
+  question             Question         @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  position             Int
+  optionOrder          Int[]
+  snapshotOptions      String[]
+  snapshotCorrectIndex Int
+  snapshotPointsTenths Int
+  snapshotSection      ScreeningSection
+  answer               Answer?
+
+  @@unique([attemptId, questionId])
+  @@unique([attemptId, position])
+  @@index([attemptId])
+  @@index([questionId])
+}
+
+model Answer {
+  id                    String          @id @default(cuid())
+  attemptQuestionId     String          @unique
+  attemptQuestion       AttemptQuestion @relation(fields: [attemptQuestionId], references: [id], onDelete: Cascade)
+  chosenDisplayedIndex  Int
+  answeredAt            DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+}
