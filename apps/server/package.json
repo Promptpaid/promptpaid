@@ -10,6 +10,7 @@
     "dev:set-status": "tsx scripts/dev-set-status.ts",
     "dev:load-questions": "tsx scripts/load-questions.ts",
     "dev:clear-questions": "tsx scripts/clear-questions.ts",
+    "dev:simulate-credit": "tsx scripts/simulate-credit.ts",
     "start": "node dist/index.mjs",
     "env:generate": "varlock codegen"
   },

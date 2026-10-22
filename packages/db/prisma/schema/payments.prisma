@@ -1,0 +1,151 @@
+// ---------------------------------------------------------------------------
+// Payments (M4): tier activation by bank transfer through a provider adapter.
+// All money is whole kobo integers; never floating point. `provider` is the
+// adapter name (the only adapter today is the dev-only "fake"). The real
+// provider is not chosen yet, so nothing here hardcodes one provider's
+// names: the adapter layer maps provider payloads onto these columns.
+//
+// Enumeration values mirror @promptpaid/shared (payment.ts), the way
+// ScreeningAttemptStatus mirrors SCREENING_ATTEMPT_STATUS.
+// ---------------------------------------------------------------------------
+
+enum PaymentPurpose {
+  // The only value written today: paying for the selected tier.
+  TIER_ACTIVATION
+  // Reserved for the later withdrawal-verification flow. Never written yet,
+  // but the schema bookkeeps the value so the next feature needs no enum
+  // migration.
+  WITHDRAWAL_VERIFICATION
+}
+
+// Terminal: EXPIRED, REVERSED, USED (new payments are allowed again).
+// Non-terminal: PENDING, CONFIRMED, UNDERPAID, OVERPAID, FLAGGED — at most
+// one such row per user is enforced by a partial unique index added as
+// custom SQL in the migration (Prisma cannot express the predicate):
+//   Payment_one_open_per_user_key ON ("userId")
+//   WHERE status IN ("PENDING","CONFIRMED","UNDERPAID","OVERPAID","FLAGGED")
+enum PaymentStatus {
+  PENDING
+  CONFIRMED
+  UNDERPAID
+  OVERPAID
+  EXPIRED
+  REVERSED
+  FLAGGED
+  USED
+}
+
+// Expiry is computed from `expiresAt` and never materialized as a status:
+// a NEW pin that expires does not need a write to be treated as expired.
+enum ActivationPinStatus {
+  NEW
+  USED
+  INVALIDATED
+  LOCKED
+}
+
+// Per request, not per provider event: the handler records every webhook
+// attempt (accepted and rejected). Deduplication of provider transactions
+// happens through conditional status updates keyed on the provider's
+// transaction reference, so a repeated notification changes nothing.
+enum PaymentEventOutcome {
+  CONSUMED
+  DUPLICATE
+  REJECTED
+  UNMATCHED
+  FAILED
+}
+
+model Payment {
+  id                 String         @id @default(cuid())
+  userId             String
+  user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tier               UserTier
+  purpose            PaymentPurpose @default(TIER_ACTIVATION)
+  // Server-side fact from TIERS[selectedTier].price (whole kobo) at start
+  // time. Never accepted from any client, bot message or webhook body.
+  expectedAmountKobo Int
+  // What the provider actually credited, if anything. Powers the
+  // shortfall/overpay reporting and the excess-for-manual-refund lists.
+  paidAmountKobo     Int?
+  provider           String
+  // The generated account is known by this reference; notifications are
+  // matched to a payment through it.
+  accountReference   String         @unique
+  // Display fields for the transfer: shown to the user, never logged.
+  bankName           String
+  accountName        String
+  accountNumber      String
+  // The provider's own transaction reference for the credit, once known.
+  providerTxRef      String?        @unique
+  status             PaymentStatus  @default(PENDING)
+  expiresAt          DateTime
+  confirmedAt        DateTime?
+  flaggedReason      String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  pins               ActivationPin[]
+
+  @@index([userId, status])
+  @@index([userId])
+}
+
+model ActivationPin {
+  id           String              @id @default(cuid())
+  // Raw pins are never stored: this is the SHA-256 hash, and lookups for
+  // activation hash the submitted pin the same way.
+  pinHash      String              @unique
+  userId       String
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  paymentId    String
+  payment      Payment             @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  status       ActivationPinStatus @default(NEW)
+  expiresAt    DateTime
+  // Wrong-attempt bookkeeping lives in the database, never in memory, so it
+  // survives restarts and counts across every device.
+  attemptsUsed Int                 @default(0)
+  // 1..PIN_MAX_ISSUES_PER_PAYMENT for the payment, enforced by the service.
+  issuedNumber Int
+  createdAt    DateTime            @default(now())
+
+  @@index([paymentId])
+  @@index([userId])
+}
+
+model TelegramLink {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // 64-bit Telegram account id.
+  telegramId BigInt   @unique
+  username   String?
+  linkedAt   DateTime @default(now())
+}
+
+model LinkKey {
+  id        String    @id @default(cuid())
+  // Raw keys are returned once and never stored: looked up by SHA-256 hash.
+  keyHash   String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+// One row per webhook request, including rejected and duplicate ones:
+// provider, event reference, outcome, reason, received time. Kept free of
+// account numbers, message text and personal data by the writer.
+model PaymentEvent {
+  id             String              @id @default(cuid())
+  provider       String
+  eventReference String
+  outcome        PaymentEventOutcome
+  reason         String?
+  receivedAt     DateTime            @default(now())
+
+  @@index([provider, eventReference])
+  @@index([receivedAt])
+}

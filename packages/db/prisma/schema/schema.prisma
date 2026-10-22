@@ -54,6 +54,10 @@ model User {
   createdAt           DateTime   @default(now())
   sessions            Session[]
   screeningAttempts   Attempt[]
+  payments            Payment[]
+  activationPins      ActivationPin[]
+  telegramLink        TelegramLink?
+  linkKeys            LinkKey[]
 }
 
 model WaitlistEntry {

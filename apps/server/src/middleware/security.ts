@@ -1,6 +1,15 @@
 import type { NextFunction, Request, Response } from "express";
 import { ENV } from "@/env.server";
 
+declare global {
+    namespace Express {
+        interface Request {
+            /** Raw body bytes, captured for webhook signature verification. */
+            rawBody?: Buffer;
+        }
+    }
+}
+
 const ALLOWED_ORIGIN = ENV.CORS_ORIGIN.trim().replace(/\/+$/, "");
 
 /**

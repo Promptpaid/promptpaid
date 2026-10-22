@@ -82,7 +82,10 @@ export type OnboardingAction =
   | "screening_answer"
   | "screening_submit"
   | "screening_result"
-  | "choose_tier";
+  | "choose_tier"
+  | "start_payment"
+  | "get_pin"
+  | "activate";
 
 export const ACTION_ALLOWED_STATUSES: Record<
   OnboardingAction,
@@ -118,6 +121,16 @@ export const ACTION_ALLOWED_STATUSES: Record<
   // TIER_CHOSEN so a user can change their mind before paying. It never
   // grants benefits; payment is a later step.
   choose_tier: [ONBOARDING_STATUS.SCREENING_PASSED, ONBOARDING_STATUS.TIER_CHOSEN],
+  // Payment starts only from TIER_CHOSEN; the service additionally requires
+  // the user to have a selectedTier and no non-terminal payment (safe to
+  // repeat: an unexpired payment is returned, not duplicated).
+  start_payment: [ONBOARDING_STATUS.TIER_CHOSEN],
+  // Pin issuance stays available while the journey sits at TIER_CHOSEN with a
+  // CONFIRMED payment; it is refused after activation.
+  get_pin: [ONBOARDING_STATUS.TIER_CHOSEN],
+  // Activation moves TIER_CHOSEN -> ACTIVATED once. ACTIVATED stays in the
+  // allowed list so a repeat call returns success without writing anything.
+  activate: [ONBOARDING_STATUS.TIER_CHOSEN, ONBOARDING_STATUS.ACTIVATED],
 };
 
 // An action requires BOTH an active account and an allowed journey status.

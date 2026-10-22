@@ -133,6 +133,10 @@ router.post("/tier", requireAuth, requireSameOrigin, requireJson, async (req, re
             return res.status(result.httpStatus).json(result.body);
         }
 
+        if (result.status === "refused") {
+            return res.status(result.httpStatus).json(result.body);
+        }
+
         return res.status(200).json({
             status: "ok",
             tier: result.tier,

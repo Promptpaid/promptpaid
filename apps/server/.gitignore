@@ -50,6 +50,9 @@ lerna-debug.log*
 # local question banks (never commit the real bank; only clearly marked samples)
 scripts/real-bank/
 
+# fake provider's local ledger (dev-only simulated transactions)
+.devpay-ledger.json
+
 # local db
 *.db*
 

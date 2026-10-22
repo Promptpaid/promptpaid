@@ -97,13 +97,14 @@ export async function deleteSessionsForUser(userId: string) {
 
 /**
  * Single writers for the account-status column and for session revocation.
- * The service layer suspends an account only through `setAccountStatus`, and
- * always pairs it with `deleteUserSessions` in the same transaction, so a
- * suspended user keeps no live session anywhere.
+ * The service layer changes account standing only through `setAccountStatus`,
+ * and always pairs it with `deleteUserSessions` in the same transaction, so a
+ * suspended or frozen user keeps no live session anywhere. Screening
+ * over-limit failures set SUSPENDED; payment reversal sets FROZEN.
  */
 export async function setAccountStatus(
     userId: string,
-    status: Extract<UserStatus, "SUSPENDED">,
+    status: Extract<UserStatus, "SUSPENDED" | "FROZEN">,
     client: Pick<Database, "user"> = db,
 ) {
     const result = await client.user.updateMany({

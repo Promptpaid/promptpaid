@@ -11,6 +11,7 @@ import {
 } from "@promptpaid/shared";
 import { db } from "@/services";
 import { getOnboardingProfile, saveProfile, setSelectedTier, transitionOnboardingStatus } from "./repo";
+import { findOpenPaymentForUser } from "@/module/payments/repo";
 import { canChooseTier, canSaveProfile, wrongStatusReply } from "./status-gate";
 import { isValidTimeZone } from "./timezone";
 
@@ -113,10 +114,6 @@ export async function chooseOnboardingTier(input: ChooseTierInput) {
         return { status: "wrong_status" as const, ...wrongStatusReply(position) };
     }
 
-    // TODO(payment): re-read the user here and refuse the change when a
-    // payment has already started. There is no payment code yet, so there
-    // is nothing to check against.
-
     // Fresh read: the session snapshot may be stale, and this doubles as
     // the idempotency check.
     const current = await getOnboardingProfile(input.userId);
@@ -136,6 +133,9 @@ export async function chooseOnboardingTier(input: ChooseTierInput) {
 
     const setting = TIERS[input.tier];
 
+    // The already-selected tier returns the same result with zero writes,
+    // even while a payment is under way: nothing changes, so repeating it
+    // stays safe.
     if (current.onboardingStatus === ONBOARDING_STATUS.TIER_CHOSEN && current.selectedTier === input.tier) {
         return {
             status: "ok" as const,
@@ -147,6 +147,31 @@ export async function chooseOnboardingTier(input: ChooseTierInput) {
                 onboardingStatus: ONBOARDING_STATUS.TIER_CHOSEN,
             }),
         };
+    }
+
+    // TODO(payment): resolved. Once a payment has started it is only
+    // changeable through the payment itself: switching tiers now would leave
+    // a payment priced for one tier while selectedTier points elsewhere.
+    // Non-terminal statuses (PENDING, CONFIRMED, UNDERPAID, OVERPAID, FLAGGED)
+    // hold the slot; terminal ones (EXPIRED, REVERSED, USED) release it.
+    if (current.selectedTier !== input.tier) {
+        const openPayment = await findOpenPaymentForUser(input.userId);
+        if (openPayment) {
+            return {
+                status: "refused" as const,
+                httpStatus: 409 as const,
+                body: {
+                    status: "refused" as const,
+                    message:
+                        "A payment for your tier is underway. Finish, expire or reverse it before choosing a different tier.",
+                    paymentStatus: openPayment.status,
+                    nextStep: nextStepFor({
+                        accountStatus: latest.accountStatus,
+                        onboardingStatus: ONBOARDING_STATUS.TIER_CHOSEN,
+                    }),
+                },
+            };
+        }
     }
 
     // One short transaction: the single status helper moves the journey,
