@@ -222,6 +222,19 @@ export function ProfileForm() {
     }
   }
 
+  // The next-step CTA re-reads the journey status and routes to whatever
+  // screen the server names. If that re-read cannot complete (offline, slow
+  // data, 5xx), the button must say so — never fail silently.
+  async function continueToJourney() {
+    const target = await journey.recoverToJourney();
+    if (!target) {
+      setFormError({
+        message: "Couldn't check your next step. Check your connection and try again.",
+        retry: () => void continueToJourney(),
+      });
+    }
+  }
+
   return (
     <form
       onSubmit={(e) => {
@@ -255,7 +268,7 @@ export function ProfileForm() {
             type="button"
             className="mt-3 min-h-11 w-full text-sm"
             disabled={submitting}
-            onClick={() => void journey.recoverToJourney()}
+            onClick={() => void continueToJourney()}
           >
             Continue
           </Button>
