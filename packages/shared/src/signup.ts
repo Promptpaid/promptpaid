@@ -16,7 +16,7 @@ export const signUpSchema = z.object({
         .string()
         .trim()
         .regex(/^\+\d{8,15}$/, "Phone must be in international format, e.g. +2348012345678"),
-    password: z.string().min(8, "Password must be at least 8 characters").max(128),
+    password: z.string().min(12, "Password must be at least 12 characters").max(128),
     country: z.enum(COUNTRIES),
     languages: z.array(z.enum(WAITLIST_LANGUAGES)).min(1).max(9),
 })

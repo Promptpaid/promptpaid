@@ -254,7 +254,7 @@ export function SignupForm() {
         <Label htmlFor="password">
           Password
           <span className="block text-xs font-normal text-muted-foreground">
-            At least 8 characters.
+            At least 12 characters.
           </span>
         </Label>
         <PasswordInput

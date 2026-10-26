@@ -6,7 +6,7 @@ export const loginSchema = z.object({
         .trim()
         .toLowerCase()
         .pipe(z.email("Enter a valid email address")),
-    password: z.string().min(8, "Password must be at least 8 characters").max(128),
+    password: z.string().min(12, "Password must be at least 12 characters").max(128),
 })
 
 export type LoginInput = z.infer<typeof loginSchema>
