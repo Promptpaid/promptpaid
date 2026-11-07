@@ -30,6 +30,22 @@ import { Button } from "@promptpaid/ui/components/button";
 import { useJourney } from "@/components/journey-provider";
 import { ScreeningResult, type ScreeningResultData } from "@/components/screening-result-view";
 
+interface PublicQuestion {
+  id: string;
+  position: number;
+  section: ScreeningSection;
+  prompt: string;
+  options: string[];
+  answer: { chosenDisplayedIndex: number; answeredAt: string } | null;
+}
+
+interface PublicAttempt {
+  id: string;
+  attemptNumber: number;
+  secondsRemaining: number;
+  questions: PublicQuestion[];
+}
+
 const sectionNames: Record<ScreeningSection, string> = {
   LANGUAGE: "Language",
   READING: "Reading",
@@ -85,7 +101,20 @@ export function ScreeningRules() {
     setCooldownMessage(null);
     setStarting(true);
     try {
-      await api<{ attempt: unknown }>("/screening/start", { method: "POST", body: {} });
+      const res = await api<{ attempt: PublicAttempt }>("/screening/start", {
+        method: "POST",
+        body: {},
+      });
+      // Cache the attempt so the test page can render immediately without
+      // waiting for a second /screening/current round-trip. The test page
+      // will still call /screening/current in the background to verify.
+      if (res.attempt) {
+        try {
+          sessionStorage.setItem("screening:attempt", JSON.stringify(res.attempt));
+        } catch {
+          // Ignore quota/private mode errors.
+        }
+      }
       // Journey position is now SCREENING_IN_PROGRESS; route through the
       // status router to the questions screen.
       await journey.recoverToJourney();

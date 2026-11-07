@@ -57,3 +57,8 @@ coverage
 tmp
 temp
 packages/db/prisma/generated/
+
+# Dev seed data (real question banks and scenarios - not committed)
+apps/server/scripts/*-sample*.json
+apps/server/scripts/scenarios-*.json
+apps/server/scripts/scenarios/

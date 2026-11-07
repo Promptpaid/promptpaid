@@ -190,6 +190,8 @@ export function ProfileForm() {
       // Reload the journey snapshot so the gate and CTA see the new
       // journey position (PROFILE_COMPLETE after a first save).
       await journey.loadStatus(true);
+      // Auto-redirect to the next screen (screening) now that status is fresh.
+      await continueToJourney();
     } catch (error) {
       if (error instanceof ApiError) {
         if (error.kind === "fields") {

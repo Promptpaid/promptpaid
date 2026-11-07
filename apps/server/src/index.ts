@@ -10,6 +10,7 @@ import screeningRouter from "./routes/screening.routes";
 import waitlistRouter from "./routes/waitlist.routes";
 import paymentsRouter from "./routes/payments.routes";
 import webhooksRouter from "./routes/webhooks.routes";
+import tasksRouter from "./routes/tasks.routes";
 import { initPaymentsProvider } from "./module/payments";
 import { db } from "./services";
 
@@ -58,6 +59,7 @@ app.use("/onboarding", onboardingRouter);
 app.use("/screening", screeningRouter);
 app.use("/payments", paymentsRouter);
 app.use("/webhooks", webhooksRouter);
+app.use("/tasks", tasksRouter);
 
 // The provider must be configured before the server accepts traffic: a
 // missing/unknown provider name, or the fake provider outside development,

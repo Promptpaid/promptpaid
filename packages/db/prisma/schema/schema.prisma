@@ -30,6 +30,34 @@ enum UserTier {
   LEGENDARY
 }
 
+enum ConversationStatus {
+  IN_PROGRESS
+  SUBMITTED
+  AUTO_REJECTED
+  PENDING_REVIEW
+  EXPIRED
+  APPROVED
+  REJECTED
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
+enum ScenarioCategory {
+  TEXT_CONVERSATION
+  MULTI_LANGUAGE
+  CULTURAL_CONTEXT
+}
+
+enum MessageSender {
+  USER
+  AI
+}
+
 model User {
   id           String     @id @default(cuid())
   name         String
@@ -52,12 +80,14 @@ model User {
   failedLoginAttempts Int        @default(0)
   lockedUntil         DateTime?
   createdAt           DateTime   @default(now())
+  tutorialCompletedAt DateTime?
   sessions            Session[]
   screeningAttempts   Attempt[]
   payments            Payment[]
   activationPins      ActivationPin[]
   telegramLink        TelegramLink?
   linkKeys            LinkKey[]
+  conversations       Conversation[]
 }
 
 model WaitlistEntry {
@@ -72,4 +102,82 @@ model WaitlistEntry {
   consentVersion String
   createdAt      DateTime @default(now())
   confirmationSentAt DateTime?
+}
+
+model Scenario {
+  id            String            @id @default(cuid())
+  title         String
+  language      String
+  aiRole        String
+  userRole      String
+  objective     String
+  minimumTurns  Int
+  difficulty    Difficulty
+  category      ScenarioCategory
+  active        Boolean           @default(true)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  conversations Conversation[]
+
+  @@unique([title, language])
+  @@index([language, active])
+  @@index([difficulty, category, active])
+}
+
+model Conversation {
+  id                   String            @id @default(cuid())
+  userId               String
+  user                 User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scenarioId           String
+  scenario             Scenario          @relation(fields: [scenarioId], references: [id], onDelete: Restrict)
+  // Snapshot of scenario at conversation start (immutable)
+  scenarioTitle        String
+  scenarioLanguage     String
+  scenarioAiRole       String
+  scenarioUserRole     String
+  scenarioObjective    String
+  scenarioMinimumTurns Int
+  scenarioDifficulty   Difficulty
+  scenarioCategory     ScenarioCategory
+  status               ConversationStatus @default(IN_PROGRESS)
+  turnCount            Int               @default(0)
+  startedAt            DateTime          @default(now())
+  lastActivityAt       DateTime
+  submittedAt          DateTime?
+  rejectionReasonCodes String[]
+  rulesResult          Json?
+  judgeResult          Json?
+  // Day key computed in user's timezone at start (YYYY-MM-DD)
+  dayKey               String
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  messages             Message[]
+
+  @@unique([userId, scenarioId])
+  @@index([userId, status])
+  @@index([userId, dayKey])
+  @@index([scenarioId])
+  @@index([startedAt])
+}
+
+model Message {
+  id                 String        @id @default(cuid())
+  conversationId     String
+  conversation       Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender             MessageSender
+  content            String
+  wordCount          Int
+  // Client-provided message ID for idempotency (user messages only)
+  clientMessageId    String?       @unique
+  serverCreatedAt    DateTime      @default(now())
+  msSincePrevious    Int?
+  flagged            Boolean       @default(false)
+  // Weak/untrusted client signals
+  typingDurationMs   Int?
+  pasted             Boolean?
+  // Missing reply marker for failed AI calls
+  missingReply       Boolean       @default(false)
+
+  @@index([conversationId, sender])
+  @@index([serverCreatedAt])
 }

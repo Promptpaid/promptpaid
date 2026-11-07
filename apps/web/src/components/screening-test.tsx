@@ -47,6 +47,31 @@ interface PublicAttempt {
 
 type LoadState = "loading" | "ready" | "error";
 
+const ATTEMPT_CACHE_KEY = "screening:attempt";
+
+function readCachedAttempt(): PublicAttempt | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(ATTEMPT_CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as PublicAttempt;
+    // Basic shape check.
+    if (!parsed.id || !Array.isArray(parsed.questions)) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function clearCachedAttempt() {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.removeItem(ATTEMPT_CACHE_KEY);
+  } catch {
+    // Ignore.
+  }
+}
+
 const SECTION_NAMES: Record<ScreeningSection, string> = {
   LANGUAGE: "Language",
   READING: "Reading",
@@ -190,6 +215,7 @@ export function ScreeningTest() {
   endAttemptRef.current = (notice) => {
     if (endedRef.current) return;
     endedRef.current = true;
+    clearCachedAttempt();
     if (flushTimerRef.current) {
       clearTimeout(flushTimerRef.current);
       flushTimerRef.current = null;
@@ -223,6 +249,7 @@ export function ScreeningTest() {
       if (res.result.suspended) {
         // Third failed attempt: the server cleared the session cookie.
         // Show the outcome inline; no navigation, no further requests.
+        clearCachedAttempt();
         setEnding(null);
         setSuspended(true);
         return;
@@ -231,6 +258,7 @@ export function ScreeningTest() {
       // allow the result screen. Re-read the journey first so the gate
       // sees the fresh status, then navigate; the result screen fetches
       // and displays the stored result itself.
+      clearCachedAttempt();
       await journey.loadStatus(true);
       router.replace(ROUTES.screeningResult);
     } catch (error) {
@@ -321,9 +349,59 @@ export function ScreeningTest() {
   }, [applySeconds]);
   resyncRef.current = resync;
 
+  // Background verification of a cached attempt. If the server says the
+  // attempt is gone or expired, we transition to the result path. Otherwise
+  // we silently update the countdown. The UI is already rendered from cache.
+  const verifyWithServer = useCallback(async (expectedAttemptId: string) => {
+    try {
+      const res = await api<{ attempt: PublicAttempt }>("/screening/current", {
+        method: "POST",
+        body: {},
+      });
+      if (endedRef.current) return;
+      if (res.attempt.id !== expectedAttemptId) {
+        // Different attempt (shouldn't happen right after start, but handle it).
+        adoptAttempt(res.attempt);
+        return;
+      }
+      // Same attempt: just refresh the authoritative secondsRemaining.
+      applySeconds(res.attempt.secondsRemaining);
+      if (res.attempt.secondsRemaining === 0 && !zeroConfirmRef.current) {
+        zeroConfirmRef.current = true;
+        endAttemptRef.current?.("Time is up. Wrapping up your attempt…");
+      }
+    } catch (error) {
+      if (error instanceof ApiError) {
+        if (error.kind === "not_found") {
+          // Attempt closed/expired while we were rendering from cache.
+          endedRef.current = true;
+          endAttemptRef.current?.(error.message);
+          return;
+        }
+        if (error.kind === "wrong_status") {
+          await journey.recoverToJourney();
+          return;
+        }
+      }
+      // Transient error: the next resync (tab focus, minute tick) will retry.
+    }
+  }, [applySeconds, journey]);
+
   const loadAttempt = useCallback(async () => {
     setLoadState("loading");
     setMsg(null);
+
+    // Try to use a cached attempt from the start response for immediate render.
+    const cached = readCachedAttempt();
+    if (cached) {
+      adoptAttempt(cached);
+      setLoadState("ready");
+      // Still verify with the server in the background (handles expiry, etc.).
+      void verifyWithServer(cached.id);
+      return;
+    }
+
+    // No cache: fall back to the normal server load.
     try {
       const res = await api<{ attempt: PublicAttempt }>("/screening/current", {
         method: "POST",
@@ -356,6 +434,11 @@ export function ScreeningTest() {
       setLoadError("No connection. Check your data and try again.");
     }
   }, [adoptAttempt, journey]);
+
+  // Initial load: fetch the attempt (or use cached data from start).
+  useEffect(() => {
+    void loadAttempt();
+  }, [loadAttempt]);
 
   // Countdown ticks (display-only), the re-sync triggers (tab focus, every
   // minute), and the one-shot confirm when the display countdown hits zero.

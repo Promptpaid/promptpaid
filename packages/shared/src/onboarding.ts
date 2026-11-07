@@ -85,7 +85,12 @@ export type OnboardingAction =
   | "choose_tier"
   | "start_payment"
   | "get_pin"
-  | "activate";
+  | "activate"
+  | "view_tasks"
+  | "start_conversation"
+  | "send_message"
+  | "submit_conversation"
+  | "complete_tutorial";
 
 export const ACTION_ALLOWED_STATUSES: Record<
   OnboardingAction,
@@ -131,6 +136,12 @@ export const ACTION_ALLOWED_STATUSES: Record<
   // Activation moves TIER_CHOSEN -> ACTIVATED once. ACTIVATED stays in the
   // allowed list so a repeat call returns success without writing anything.
   activate: [ONBOARDING_STATUS.TIER_CHOSEN, ONBOARDING_STATUS.ACTIVATED],
+  // Task system (M5): only ACTIVATED users with ACTIVE account status.
+  view_tasks: [ONBOARDING_STATUS.ACTIVATED],
+  start_conversation: [ONBOARDING_STATUS.ACTIVATED],
+  send_message: [ONBOARDING_STATUS.ACTIVATED],
+  submit_conversation: [ONBOARDING_STATUS.ACTIVATED],
+  complete_tutorial: [ONBOARDING_STATUS.ACTIVATED],
 };
 
 // An action requires BOTH an active account and an allowed journey status.
